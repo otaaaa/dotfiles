@@ -1,0 +1,12 @@
+[user]
+	email = tomoaki.ota14@gmail.com
+	name = otaaaa
+[core]
+	excludesfile = ~/.gitignore_global
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+[commit]
+	template = ~/.gitmessage
