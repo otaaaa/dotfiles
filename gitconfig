@@ -8,5 +8,6 @@
 	br = branch
 	ci = commit
 	st = status
+  cl = clean -fd
 [commit]
 	template = ~/.gitmessage
