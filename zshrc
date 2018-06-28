@@ -28,6 +28,8 @@ alias lap="ls -la | peco"
 alias reload='source ~/.zshrc'
 alias repo='cd $(ghq list -p | peco)'
 alias pwdy='pwd | pbcopy'
+alias -g X='| xargs'
+alias -g C='| wc -l'
 
 function keygen() {
   local length=12
@@ -66,9 +68,21 @@ eval "$(hub alias -s)"
 alias gl="git log --no-merges --date=short --pretty='format:%C(yellow)%h %C(green)%cd %C(blue)%an%C(red)%d %C(reset)%s'"
 
 # Docker
+alias dcp='docker container prune'
+alias dip='docker image prune'
+alias dvp='docker volume prune'
 alias drm='docker rm $(docker ps -aq)'
 alias drmi='docker rmi $(docker images -q)'
 alias drmv='docker volume rm $(docker volume ls -q)'
+
+# Kubernetes
+alias -g KP='$(kubectl get pods | peco | awk "{print \$1}")'
+alias -g KD='$(kubectl get deploy | peco | awk "{print \$1}")'
+alias -g KS='$(kubectl get svc | peco | awk "{print \$1}")'
+alias -g KI='$(kubectl get ing | peco | awk "{print \$1}")'
+alias kc='kubectl'
+alias kce='kubectl exec -it KP'
+alias kcl='kubectl logs -f KP'
 
 # Golang
 export GOPATH=$HOME/go
