@@ -68,6 +68,8 @@ eval "$(hub alias -s)"
 alias gl="git log --no-merges --date=short --pretty='format:%C(yellow)%h %C(green)%cd %C(blue)%an%C(red)%d %C(reset)%s'"
 
 # Docker
+alias -g DI='docker images | peco | awk "{print \$3}"'
+alias dsh='docker run --rm -it $(DI) sh'
 alias dcp='docker container prune'
 alias dip='docker image prune'
 alias dvp='docker volume prune'
