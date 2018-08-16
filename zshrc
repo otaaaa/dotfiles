@@ -69,7 +69,9 @@ alias gl="git log --no-merges --date=short --pretty='format:%C(yellow)%h %C(gree
 
 # Docker
 alias -g DI='docker images | peco | awk "{print \$3}"'
+alias -g DC='docker ps | peco | awk "{print \$1}"'
 alias dsh='docker run --rm -it $(DI) sh'
+alias dat='docker attach $(DC)'
 alias dcp='docker container prune'
 alias dip='docker image prune'
 alias dvp='docker volume prune'
@@ -91,8 +93,8 @@ export GOPATH=$HOME/go
 
 # Ruby
 eval "$(rbenv init -)"
-alias cop='docker-compose run --rm app bundle exec rubocop -a'
-alias spec='docker-compose run --rm app bundle exec rspec'
+alias rubocop='docker-compose run --rm app bundle exec rubocop -a'
+alias rspec='docker-compose run --rm -e "RAILS_ENV=test" app bundle exec rspec'
 alias console='docker-compose run --rm app bin/rails c'
 alias routes='docker-compose run --rm app bin/rake routes'
 alias ridgepole='docker-compose run --rm app bin/rake ridgepole:apply'
