@@ -127,4 +127,24 @@ function proxy {
                     -credential_file=$CLOUD_SQL_PROXY_CREDENTIALS
 }
 
+function cluster {
+  gcloud auth activate-service-account $GOOGLE_SERVICE_ACCOUNT --key-file $GOOGLE_APPLICATION_CREDENTIALS --project=$GOOGLE_PROJECT_ID
+  gcloud container clusters get-credentials -z asia-east1-a $CLUSTER_NAME
+}
+
+# ansible-vault
+function encrypt {
+  tmpfile=$(mktemp)
+  echo $VAULT_PASSWORD >> $tmpfile
+  ansible-vault encrypt --vault-password-file=$tmpfile $@
+  rm $tmpfile
+}
+
+function decrypt {
+  tmpfile=$(mktemp)
+  echo $VAULT_PASSWORD >> $tmpfile
+  ansible-vault decrypt --vault-password-file=$tmpfile $@
+  rm $tmpfile
+}
+
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
