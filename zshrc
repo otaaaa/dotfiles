@@ -100,6 +100,13 @@ alias routes='docker-compose run --rm app bin/rake routes'
 alias ridgepole='docker-compose run --rm app bin/rake ridgepole:apply'
 alias run='docker-compose run --rm app'
 
+function cleanup {
+  docker-compose stop && \
+  docker container prune -f && \
+  docker volume rm $REDIS_CONTAINER_NAME && \
+  rm -f tmp/pids/server.pid
+}
+
 # Node.js
 eval "$(nodenv init -)"
 alias ns="npm ls -g --depth=0"
