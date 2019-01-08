@@ -36,6 +36,10 @@ function keygen() {
   echo "$(openssl rand -base64 $length)"
 }
 
+function ipv4() {
+  ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'
+}
+
 # zsh history
 setopt share_history
 setopt hist_ignore_dups
@@ -65,19 +69,15 @@ alias vim='nvim'
 
 # Git
 eval "$(hub alias -s)"
-alias gl="git log --no-merges --date=short --pretty='format:%C(yellow)%h %C(green)%cd %C(blue)%an%C(red)%d %C(reset)%s'"
 
 # Docker
 alias -g DI='docker images | peco | awk "{print \$3}"'
 alias -g DC='docker ps | peco | awk "{print \$1}"'
 alias dsh='docker run --rm -it $(DI) sh'
 alias dat='docker attach $(DC)'
-alias dcp='docker container prune'
-alias dip='docker image prune'
-alias dvp='docker volume prune'
 alias drm='docker rm $(docker ps -aq)'
-alias drmi='docker rmi $(docker images -q)'
-alias drmv='docker volume rm $(docker volume ls -q)'
+alias drmi='docker rmi $(docker images -f "dangling=true" -q)'
+alias drmv='docker volume rm $(docker volume ls -qf dangling=true)'
 
 # Kubernetes
 alias -g KP='$(kubectl get pods | peco | awk "{print \$1}")'
