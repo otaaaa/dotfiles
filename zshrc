@@ -80,6 +80,7 @@ alias drmi='docker rmi $(docker images -f "dangling=true" -q)'
 alias drmv='docker volume rm $(docker volume ls -qf dangling=true)'
 
 # Kubernetes
+source <(kubectl completion zsh)
 alias -g KP='$(kubectl get pods | peco | awk "{print \$1}")'
 alias -g KD='$(kubectl get deploy | peco | awk "{print \$1}")'
 alias -g KS='$(kubectl get svc | peco | awk "{print \$1}")'
@@ -134,7 +135,7 @@ function proxy {
                     -credential_file=$CLOUD_SQL_PROXY_CREDENTIALS
 }
 
-function cluster {
+function gauth {
   gcloud auth activate-service-account $GOOGLE_SERVICE_ACCOUNT --key-file $GOOGLE_APPLICATION_CREDENTIALS --project=$GOOGLE_PROJECT_ID
   gcloud container clusters get-credentials -z asia-east1-a $CLUSTER_NAME
 }

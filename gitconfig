@@ -1,19 +1,21 @@
 # https://github.com/gggritso/dotfiles/blob/master/gitconfig.symlink
 [user]
-	email = tomoaki.ota14@gmail.com
-	name = otaaaa
+  email = tomoaki.ota14@gmail.com
+  name = otaaaa
 [core]
-	excludesfile = ~/.gitignore_global
+  excludesfile = ~/.gitignore_global
 [alias]
-	co = checkout
-	br = branch
-	ci = commit
-	st = status
-  sl = log --no-merges --date=short --pretty='format:%C(yellow)%h %C(green)%cd %C(blue)%an%C(red)%d %C(reset)%s'
+  co = checkout
+  br = branch
+  ci = commit
+  st = status
+  save = commit -m
+  resave = commit --amend -m
+  hashes = log --no-merges --date=short --pretty='format:%C(yellow)%h %C(green)%cd %C(blue)%an%C(red)%d %C(reset)%s'
   graph = log --graph -10 --branches --remotes --tags  --format=format:'%Cgreen%h %Creset• %<(75,trunc)%s (%cN, %ar) %Cred%d' --date-order
   prestage = diff -w
   branches = branch -a
   stashes = stash list
+  prune = git clean -fd
 [commit]
-	template = ~/.gitmessage
-
+  template = ~/.gitmessage
