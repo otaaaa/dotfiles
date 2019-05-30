@@ -118,19 +118,6 @@ export PROJECT_ID="$(gcloud config get-value project -q)"
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
 
-function region {
-  cat <<EOF
-- provider: GCP
-  region: asia-northeast1
-  availability_zone:
-  - asia-northeast1-a
-  - asia-northeast1-b
-  - asia-northeast1-c
-- provider: AWS
-  region: ap-northeast-1
-EOF
-}
-
 function proxy {
   ~/cloud_sql_proxy -instances=$INSTANCE_CONNECTION_NAME=tcp:3306 \
                     -credential_file=$CLOUD_SQL_PROXY_CREDENTIALS
