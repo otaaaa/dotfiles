@@ -30,6 +30,7 @@ alias repo='cd $(ghq list -p | peco)'
 alias pwdy='pwd | pbcopy'
 alias -g X='| xargs'
 alias -g C='| wc -l'
+alias ctx='source $(find ~/.env -type f | peco)'
 
 function keygen() {
   local length=12
@@ -137,7 +138,7 @@ function proxy {
 
 function gauth {
   gcloud auth activate-service-account $GOOGLE_SERVICE_ACCOUNT --key-file $GOOGLE_APPLICATION_CREDENTIALS --project=$GOOGLE_PROJECT_ID
-  gcloud container clusters get-credentials -z asia-east1-a $CLUSTER_NAME
+  gcloud container clusters get-credentials -z $ZONE_NAME $CLUSTER_NAME
 }
 
 # ansible-vault
@@ -156,3 +157,4 @@ function decrypt {
 }
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
