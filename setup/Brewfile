@@ -1,8 +1,10 @@
+tap "argoproj/tap"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/core"
 brew "ansible"
 brew "awscli"
+brew "circleci"
 brew "ghq"
 brew "go"
 brew "hub"
@@ -14,10 +16,14 @@ brew "nkf"
 brew "node-build"
 brew "nodenv"
 brew "peco"
+brew "qrencode"
+brew "ruby-build"
 brew "rbenv"
+brew "sops"
 brew "terraform"
 brew "vim"
 brew "wget"
+brew "argoproj/tap/argo"
 cask "burp-suite"
 cask "caffeine"
 cask "docker"
@@ -25,6 +31,9 @@ cask "evernote"
 cask "google-chrome"
 cask "google-cloud-sdk"
 cask "iterm2"
+cask "java"
+cask "keka"
+cask "poedit"
 cask "qlstephen"
 cask "rubymine"
 cask "sequel-pro"
@@ -32,7 +41,10 @@ cask "sketch"
 cask "skitch"
 cask "slack"
 cask "sublime-text"
-mas "Keynote", id: 409183694
-mas "Kindle", id: 405399194
-mas "LINE", id: 539883307
-mas "Xcode", id: 497799835
+cask "virtualbox"
+cask "visual-studio-code"
+mas "com.amazon.Kindle", id: 405399194
+mas "com.apple.dt.Xcode", id: 497799835
+mas "com.apple.iWork.Keynote", id: 409183694
+mas "com.binarynights.ForkLift2", id: 412448059
+mas "jp.naver.line.mac", id: 539883307
