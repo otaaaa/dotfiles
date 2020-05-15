@@ -5,7 +5,10 @@
 [core]
   excludesfile = ~/.gitignore_global
 [alias]
-  co = checkout
+  co = !git branch | fzf | xargs git checkout
+  switch = checkout
+  restore = checkout
+  unstage = reset HEAD
   br = branch
   ci = commit
   st = status
