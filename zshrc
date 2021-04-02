@@ -25,6 +25,7 @@ setopt nobeep
 setopt complete_aliases
 alias ll="ls -lG"
 alias la="ls -laG"
+alias load='set -a; source ./.env; set +a;'
 alias reload='source ~/.zshrc'
 alias repo='cd $(ghq list -p | fzf)'
 alias -g C='| wc -l'
@@ -80,9 +81,12 @@ alias drmv='docker volume rm $(docker volume ls -qf dangling=true)'
 
 # Kubernetes
 alias -g KP='$(kubectl get pods | fzf | awk "{print \$1}")'
+alias -g KN='$(kubectl get nodes | fzf | awk "{print \$1}")'
 alias kc='kubectl'
-alias kce='kubectl exec -it KP'
-alias kcl='kubectl logs -f KP'
+alias kce='kubectl exec -it KP' # ex. kce -c app ash
+alias kcl='kubectl logs -f KP'  # ex. kcl app
+alias kdp='kubectl describe pod KP'
+alias kdn='kubectl describe node KN'
 
 # Golang
 export GOPATH=$HOME/go
@@ -110,19 +114,25 @@ alias ns="npm ls -g --depth=0"
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
 source <(kubectl completion zsh)
+complete -F __start_kubectl kc
 
 function gconfig {
-  echo "Project     [$(gcloud config get-value project)]"
-  echo "K8s Context [$(kubectl config current-context)]"
+  echo -e "\e[32;1;m$(gcloud config get-value project)"
+  if [ ! -z $CLUSTER_NAME ]; then
+    echo -e "\e[32;1;m$(kubectl config current-context)"
+  fi
 }
 
 function gauth {
   source $(find ~/.env/auth/* -type f | fzf)
-  gcloud auth activate-service-account $GOOGLE_SERVICE_ACCOUNT \
-              --key-file $GOOGLE_APPLICATION_CREDENTIALS \
-              --project=$GOOGLE_PROJECT_ID
-  # gcloud container clusters get-credentials -z $ZONE_NAME $CLUSTER_NAME
-  gcloud container clusters get-credentials --region $REGION_NAME $CLUSTER_NAME
+  gcloud auth activate-service-account \
+    --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+
+  kubectl config unset current-context
+  if [ ! -z $CLUSTER_NAME ]; then
+    gcloud container clusters get-credentials \
+      --region $REGION_NAME $CLUSTER_NAME
+  fi
   gconfig
 }
 
