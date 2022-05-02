@@ -45,7 +45,7 @@ function ipv4() {
 }
 
 function gip() {
-  wget -qO- http://checkip.amazonaws.com
+  curl -s http://checkip.amazonaws.com
 }
 
 # zsh history
@@ -93,12 +93,12 @@ export GOPATH=$HOME/go
 
 # Ruby
 eval "$(rbenv init -)"
-alias rubocop='docker-compose run --rm app bundle exec rubocop -a'
-alias rspec='docker-compose run --rm -e "RAILS_ENV=test" app bundle exec rspec'
-alias console='docker-compose run --rm app bin/rails c'
-alias routes='docker-compose run --rm app bin/rake routes'
-alias ridgepole='docker-compose run --rm app bin/rake ridgepole:apply'
-alias run='docker-compose run --rm app'
+alias rubocop='docker compose run --rm app bundle exec rubocop -a'
+alias rspec='docker compose run --rm -e "RAILS_ENV=test" app bundle exec rspec'
+alias console='docker compose run --rm app bin/rails c'
+alias routes='docker compose run --rm app bin/rake routes'
+alias ridgepole='docker compose run --rm app bin/rake ridgepole:apply'
+alias run='docker compose run --rm app'
 
 function cleanup {
   rm -f tmp/pids/server.pid && \
@@ -116,30 +116,52 @@ source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.in
 source <(kubectl completion zsh)
 complete -F __start_kubectl kc
 
-function gconfig {
-  echo -e "\e[32;1;m$(gcloud config get-value project)"
+function kctx {
+  kubectl config unset current-context > /dev/null 2>&1
+  export REGION_NAME=asia-northeast1
+  export CLUSTER_NAME=$(gcloud container clusters list --format 'value(name)' --limit 1 2>/dev/null)
   if [ ! -z $CLUSTER_NAME ]; then
-    echo -e "\e[32;1;m$(kubectl config current-context)"
+    gcloud container clusters get-credentials \
+      --region $REGION_NAME $CLUSTER_NAME > /dev/null 2>&1
+  fi
+}
+
+function gcfg {
+  echo -e "project: $(gcloud config get-value project)"
+  if [ ! -z $CLUSTER_NAME ]; then
+    echo -e "context: $(kubectl config current-context)"
+  else
+    echo -e "context: "
   fi
 }
 
 function gauth {
-  source $(find ~/.env/auth/* -type f | fzf)
+  export GOOGLE_APPLICATION_CREDENTIALS=$(find ~/.gcloud/*.json -type f | fzf)
+  export GOOGLE_PROJECT_ID=$(cat $GOOGLE_APPLICATION_CREDENTIALS | jq -r '.project_id')
   gcloud auth activate-service-account \
-    --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+      --key-file=$GOOGLE_APPLICATION_CREDENTIALS \
+      --project=$GOOGLE_PROJECT_ID > /dev/null 2>&1
+  kctx
+  gcfg
+}
 
-  kubectl config unset current-context
-  if [ ! -z $CLUSTER_NAME ]; then
-    gcloud container clusters get-credentials \
-      --region $REGION_NAME $CLUSTER_NAME
-  fi
-  gconfig
+function notify {
+  local account=$(gcloud config get core/account)
+  local ip=$(gip)
+  curl -X POST -H 'Content-type: application/json' --data "{
+    \"text\": \"${account}\n_${ip}_\"
+  }" $SLACK_URL > /dev/null 2>&1
 }
 
 function proxy {
-  source $(find ~/.env/proxy/* -type f | fzf)
+  INSTANCE_CONNECTION_NAME=`
+    gcloud sql instances list --format 'value(name)' \
+      | fzf \
+      | xargs gcloud sql instances describe --format 'value(connectionName)'
+  `
+  notify
   ~/cloud_sql_proxy -instances=$INSTANCE_CONNECTION_NAME=tcp:3306 \
-                    -credential_file=$CLOUD_SQL_PROXY_CREDENTIALS
+                    -credential_file=$GOOGLE_APPLICATION_CREDENTIALS
 }
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local

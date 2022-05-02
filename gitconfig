@@ -19,6 +19,6 @@
   prestage = diff -w
   branches = branch -a
   stashes = stash list
-  prune = git clean -fd
+  hub = browse
 [commit]
   template = ~/.gitmessage
