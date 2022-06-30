@@ -92,7 +92,6 @@ alias kdn='kubectl describe node KN'
 export GOPATH=$HOME/go
 
 # Ruby
-eval "$(rbenv init -)"
 alias rubocop='docker compose run --rm app bundle exec rubocop -a'
 alias rspec='docker compose run --rm -e "RAILS_ENV=test" app bundle exec rspec'
 alias console='docker compose run --rm app bin/rails c'
@@ -107,12 +106,13 @@ function cleanup {
 }
 
 # Node.js
-eval "$(nodenv init -)"
 alias ns="npm ls -g --depth=0"
 
 # Google Cloud Platform
-source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
-source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+
+# Kubernetes
 source <(kubectl completion zsh)
 complete -F __start_kubectl kc
 
