@@ -87,6 +87,7 @@ alias kce='kubectl exec -it KP' # ex. kce -c app ash
 alias kcl='kubectl logs -f KP'  # ex. kcl app
 alias kdp='kubectl describe pod KP'
 alias kdn='kubectl describe node KN'
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # Golang
 export GOPATH=$HOME/go
