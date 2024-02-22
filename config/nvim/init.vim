@@ -1,4 +1,5 @@
 let loaded_matchparen = 1
+let g:python3_host_prog = '/usr/bin/python3'
 set noundofile
 set backspace=indent,eol,start
 "set autoread

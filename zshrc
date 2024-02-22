@@ -1,3 +1,6 @@
+# Set PATH, MANPATH, etc., for Homebrew.
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # Zplug
 source ~/.zplug/init.zsh
 zplug "mafredri/zsh-async", from:github
