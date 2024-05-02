@@ -25,4 +25,12 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# IntelliJ IDEA
 .idea
+
+# Linux user files
+.bash_history
+
+# google/clasp
+.clasprc.json
+
